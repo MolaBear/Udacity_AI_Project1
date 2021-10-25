@@ -25,10 +25,9 @@ from os import listdir
 #       with this function
 def get_pet_labels(image_dir):
     filename_list = listdir("pet_images/")
-
-    filenames = []
-    pet_labels = []
-
+    
+    results_dic = dict()
+    
     for idx in range(0, len(filename_list), 1):
         pet_image = filename_list[idx]
         low_pet_image = pet_image.lower()
@@ -38,8 +37,10 @@ def get_pet_labels(image_dir):
             if word.isalpha():
                 pet_name += word + " " 
         pet_name = pet_name.strip()
-        filenames.append(pet_image)
-        pet_labels.append(pet_name)
         
-    results_dic = dict(zip(filenames, pet_labels))
+        if filename_list[idx] not in results_dic:
+            results_dic[filename_list[idx]] = [pet_name]        
+        else:
+            print("** Warning: Duplicate files exist in directory:",
+                     filename_list[idx])
     return results_dic
